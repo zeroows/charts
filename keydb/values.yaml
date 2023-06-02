@@ -2,7 +2,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 imageRepository: eqalpha/keydb
-imageTag: x86_64_v6.3.2
+imageTag: alpine_x86_64_v6.3.3
 imagePullPolicy: IfNotPresent
 imagePullSecrets: []
 
