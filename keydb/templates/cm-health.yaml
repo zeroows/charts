@@ -6,7 +6,7 @@ metadata:
     {{- include "keydb.labels" . | nindent 4 }}
 data:
   ping_readiness_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
@@ -26,7 +26,7 @@ data:
     fi
 
   ping_liveness_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
@@ -46,7 +46,7 @@ data:
 {{- if .Values.scripts.enabled }}
 
   scripts_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
@@ -64,7 +64,7 @@ data:
 
 {{- if .Values.scripts.cleanupCoredumps.enabled }}
   cleanup_coredumps.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
@@ -72,7 +72,7 @@ data:
 {{- end }}
 {{- if .Values.scripts.cleanupTempfiles.enabled }}
   cleanup_tempfiles.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
