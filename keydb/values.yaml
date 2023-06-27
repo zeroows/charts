@@ -191,12 +191,8 @@ serviceAccount:
   enabled: false
   create: true
   name: ""
-
-  # extraSpec:
-  #   automountServiceAccountToken: false
-  #   imagePullSecrets:
-  #   - name: pull-secret
-  extraSpec: {}
+  extraSpec:
+    automountServiceAccountToken: false
 
 loadBalancer:
   enabled: false
