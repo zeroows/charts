@@ -32,8 +32,11 @@ jobs:
     - name: Create kind cluster
       uses: helm/kind-action@v1.4.0
 
+    - name: Install required CRDs
+      run: kubectl apply -f keydb/test-crds/service-monitor.yaml
+
     - name: Install chart
-      run: ct install --chart-dirs keydb --charts keydb
+      run: ct install --chart-dirs keydb --charts keydb --helm-extra-set-args "--set=topologySpreadConstraints="
 
     - name: Notify failure
       if: failure()
