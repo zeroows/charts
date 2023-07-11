@@ -1,8 +1,9 @@
 nameOverride: ""
 fullnameOverride: ""
 
-imageRepository: eqalpha/keydb
-imageTag: x86_64_v6.3.3
+imageRepository: quay.io/elisaoyj/keydb
+imageTag: alpine_x86_64_v6.3.3_tini
+
 imagePullPolicy: IfNotPresent
 imagePullSecrets: []
 
