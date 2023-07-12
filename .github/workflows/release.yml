@@ -35,8 +35,9 @@ jobs:
       with:
         context: ./keydb/
         push: true
-        tags: quay.io/elisaoyj/keydb:latest
-        tags: quay.io/elisaoyj/keydb:alpine_x86_64_v6.3.3_tini
+        tags: |
+          quay.io/elisaoyj/keydb:latest
+          quay.io/elisaoyj/keydb:alpine_x86_64_v6.3.3_tini
 
     - name: Configure Git
       run: |
