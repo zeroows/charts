@@ -10,9 +10,7 @@ on:
 jobs:
 
   helm-chart:
-    runs-on:
-    - self-hosted
-    - kaas
+    runs-on: elisa-normal
 
     timeout-minutes: 15
 
