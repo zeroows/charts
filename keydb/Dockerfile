@@ -1,4 +1,4 @@
-FROM docker.io/eqalpha/keydb:alpine_x86_64_v6.3.3
+FROM docker.io/eqalpha/keydb:alpine_x86_64_v6.3.4
 RUN apk add --no-cache su-exec tini
 VOLUME /data
 WORKDIR /data
