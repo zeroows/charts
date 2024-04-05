@@ -41,6 +41,6 @@ jobs:
       if: failure()
       env:
         MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-        MATTERMOST_TEXT: "${{ github.repository }} master build. Please check [here](${{ github.event.pull_request.html_url }}/checks)."
+        MATTERMOST_TEXT: "${{ github.repository }} [${{ github.event.ref }}](${{ github.event.repository.html_url }}/tree/${{ github.event.ref }}) build failed."
       run: |
         send-to-mattermost
