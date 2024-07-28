@@ -43,8 +43,7 @@ spec:
         image: {{ .Values.imageRepository }}:{{ .Values.imageTag }}
         {{- end }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        command:
-        - /utils/server.sh
+        command: ["tini", "--", "docker-entrypoint.sh", "/utils/server.sh"]
         env:
         - name: REDIS_PORT
           value: {{ .Values.internalPort | quote }}

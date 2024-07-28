@@ -2,7 +2,8 @@ nameOverride: ""
 fullnameOverride: ""
 
 imageRepository: eqalpha/keydb
-imageTag: x86_64_v6.3.2
+imageTag: alpine_x86_64_v6.3.4
+
 imagePullPolicy: IfNotPresent
 imagePullSecrets: []
 
@@ -42,14 +43,10 @@ tolerations: {}
 nodeSelector: {}
   # topology.kubernetes.io/region: some-region
 
-topologySpreadConstraints: []
-# - maxSkew: 1
-#   ## Optional keys
-#   # whenUnsatisfiable: DoNotSchedule
-#   # topologyKey: "topology.kubernetes.io/zone"
-#   # minDomains: 1
-#   # nodeAffinityPolicy: Honor
-#   # nodeTaintsPolicy: Honor
+topologySpreadConstraints:
+- maxSkew: 1
+  whenUnsatisfiable: DoNotSchedule
+  topologyKey: topology.kubernetes.io/zone
 
 affinity:
   podAntiAffinity:
@@ -171,16 +168,20 @@ resources: {}
 
 # Please read https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/#enabling-unsafe-sysctls
 # before sysctls setup
-securityContext: {}
-  # sysctls:
-  # - name: net.core.somaxconn
-  #   value: "512"
-  # - name: vm.overcommit_memory
-  #   value: "1"
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 999
+  runAsGroup: 999
+  fsGroup: 999
+  seccompProfile:
+    type: RuntimeDefault
 
 keydb:
-  # Container security context
-  securityContext: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
 
 service:
   annotations: {}
@@ -191,12 +192,8 @@ serviceAccount:
   enabled: false
   create: true
   name: ""
-
-  # extraSpec:
-  #   automountServiceAccountToken: false
-  #   imagePullSecrets:
-  #   - name: pull-secret
-  extraSpec: {}
+  extraSpec:
+    automountServiceAccountToken: false
 
 loadBalancer:
   enabled: false
@@ -214,7 +211,7 @@ loadBalancer:
 # Prometheus-operator ServiceMonitor
 serviceMonitor:
   # Redis exporter must also be enabled
-  enabled: false
+  enabled: true
   labels:
   annotations:
   interval: 30s
@@ -222,9 +219,9 @@ serviceMonitor:
 
 # Redis exporter
 exporter:
-  enabled: false
+  enabled: true
   imageRepository: oliver006/redis_exporter
-  imageTag: v1.48.0-alpine
+  imageTag: v1.58.0-alpine
   pullPolicy: IfNotPresent
 
   # Prometheus port & scrape path
@@ -256,7 +253,11 @@ exporter:
   resources: {}
 
   # Container security context
-  securityContext: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
 
   # Additional args for redis exporter
   extraArgs: []

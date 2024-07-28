@@ -6,13 +6,13 @@ metadata:
     {{- include "keydb.labels" . | nindent 4 }}
 data:
   ping_readiness_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
     loading_response="LOADING KeyDB is loading the dataset in memory"
 
-    [[ -n "${REDIS_PASSWORD}" ]] && export REDISCLI_AUTH="${REDIS_PASSWORD}"
+    [ -n "${REDIS_PASSWORD}" ] && export REDISCLI_AUTH="${REDIS_PASSWORD}"
     response="$(
       timeout -s 15 "${1}" \
       keydb-cli \
@@ -26,11 +26,11 @@ data:
     fi
 
   ping_liveness_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
-    [[ -n "${REDIS_PASSWORD}" ]] && export REDISCLI_AUTH="${REDIS_PASSWORD}"
+    [ -n "${REDIS_PASSWORD}" ] && export REDISCLI_AUTH="${REDIS_PASSWORD}"
     response="$(
       timeout -s 15 "${1}" \
       keydb-cli \
@@ -46,7 +46,7 @@ data:
 {{- if .Values.scripts.enabled }}
 
   scripts_local.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
@@ -64,7 +64,7 @@ data:
 
 {{- if .Values.scripts.cleanupCoredumps.enabled }}
   cleanup_coredumps.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
@@ -72,7 +72,7 @@ data:
 {{- end }}
 {{- if .Values.scripts.cleanupTempfiles.enabled }}
   cleanup_tempfiles.sh: |-
-    #!/bin/bash
+    #!/bin/sh
 
     set -e
 
