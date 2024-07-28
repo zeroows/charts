@@ -39,7 +39,7 @@ jobs:
 
       - name: Create helm package
         run: |
-          "${CR_TOOL_PATH}/cr" package ./keydb/ --version ${{github.ref_name}} --package-path "${CR_PACKAGE_PATH}"
+          "${CR_TOOL_PATH}/cr" package ./keydb/ --package-path "${CR_PACKAGE_PATH}"
           echo "Result of chart package:"
           ls -l "${CR_PACKAGE_PATH}"
 
