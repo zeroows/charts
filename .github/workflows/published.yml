@@ -28,30 +28,34 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
 
-      - name: Install CR tool
-        run: |
-          mkdir "${CR_TOOL_PATH}"
-          mkdir "${CR_PACKAGE_PATH}"
-          mkdir "${CR_INDEX_PATH}"
-          curl -sSLo cr.tar.gz "https://github.com/helm/chart-releaser/releases/download/v1.6.1/chart-releaser_1.6.1_linux_amd64.tar.gz"
-          tar -xzf cr.tar.gz -C "${CR_TOOL_PATH}"
-          rm -f cr.tar.gz
+      # - name: Install CR tool
+      #   run: |
+      #     mkdir "${CR_TOOL_PATH}"
+      #     mkdir "${CR_PACKAGE_PATH}"
+      #     mkdir "${CR_INDEX_PATH}"
+      #     curl -sSLo cr.tar.gz "https://github.com/helm/chart-releaser/releases/download/v1.6.1/chart-releaser_1.6.1_linux_amd64.tar.gz"
+      #     tar -xzf cr.tar.gz -C "${CR_TOOL_PATH}"
+      #     rm -f cr.tar.gz
 
-      - name: Create helm package
-        run: |
-          "${CR_TOOL_PATH}/cr" package ./keydb/ --package-path "${CR_PACKAGE_PATH}"
-          echo "Result of chart package:"
-          ls -l "${CR_PACKAGE_PATH}"
+      # - name: Create helm package
+      #   run: |
+      #     "${CR_TOOL_PATH}/cr" package ./keydb/ --package-path "${CR_PACKAGE_PATH}"
+      #     echo "Result of chart package:"
+      #     ls -l "${CR_PACKAGE_PATH}"
+
+      - name: Package chart
+        run: helm package ./keydb/ --destination ./.deploy/ --version ${{github.ref_name}}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         with:
           charts_dir: keydb
           config: cr.yaml
+          skip_packaging: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          # CR_PACKAGE_PATH: .deploy
-          # CR_INDEX_PATH: index.yaml
+          CR_PACKAGE_PATH: .deploy
+          CR_INDEX_PATH: index.yaml
           CR_SKIP_EXISTING: true
 
       - name: Login to GHCR
@@ -64,7 +68,7 @@ jobs:
       - name: Push charts to GHCR
         run: |
           shopt -s nullglob
-          for pkg in .cr-release-packages/*.tgz; do
+          for pkg in .deploy/*.tgz; do
             if [ -z "${pkg:-}" ]; then
               break
             fi
