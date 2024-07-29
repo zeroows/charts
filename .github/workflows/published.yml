@@ -19,10 +19,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Checkout tools repo
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: gh-pages
+      - name: Set username and email
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - uses: actions/setup-python@v5
         with:
@@ -31,21 +31,6 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@v4
-
-      # - name: Install CR tool
-      #   run: |
-      #     mkdir "${CR_TOOL_PATH}"
-      #     mkdir "${CR_PACKAGE_PATH}"
-      #     mkdir "${CR_INDEX_PATH}"
-      #     curl -sSLo cr.tar.gz "https://github.com/helm/chart-releaser/releases/download/v1.6.1/chart-releaser_1.6.1_linux_amd64.tar.gz"
-      #     tar -xzf cr.tar.gz -C "${CR_TOOL_PATH}"
-      #     rm -f cr.tar.gz
-
-      # - name: Create helm package
-      #   run: |
-      #     "${CR_TOOL_PATH}/cr" package ./keydb/ --package-path "${CR_PACKAGE_PATH}"
-      #     echo "Result of chart package:"
-      #     ls -l "${CR_PACKAGE_PATH}"
 
       - name: Package chart
         run: helm package ./keydb/ --destination ./${{env.CR_PACKAGE_PATH}} --version ${{github.ref_name}}
