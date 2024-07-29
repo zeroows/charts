@@ -4,11 +4,10 @@ on:
   release:
     types:
       - published
-
 env:
-  CR_INDEX_PATH: "${{ github.workspace }}/.cr-index"
-  CR_PACKAGE_PATH: "${{ github.workspace }}/.cr-release-packages"
-  CR_TOOL_PATH: "${{ github.workspace }}/.cr-tool"
+  CR_OWNER: ${{ github.actor }}
+  CR_GIT_REPO: ${{ github.event.repository.name }}
+  CR_PACKAGE_PATH: .deploy
 
 jobs:
   deploy:
@@ -18,7 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
+
+      # - name: Checkout tools repo
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: gh-pages
 
       - uses: actions/setup-python@v5
         with:
@@ -44,7 +48,7 @@ jobs:
       #     ls -l "${CR_PACKAGE_PATH}"
 
       - name: Package chart
-        run: helm package ./keydb/ --destination ./.deploy/ --version ${{github.ref_name}}
+        run: helm package ./keydb/ --destination ./${{env.CR_PACKAGE_PATH}} --version ${{github.ref_name}}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
@@ -54,7 +58,7 @@ jobs:
           skip_packaging: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_PACKAGE_PATH: .deploy
+          # CR_PACKAGE_PATH: .deploy
           CR_INDEX_PATH: index.yaml
           CR_SKIP_EXISTING: true
 
