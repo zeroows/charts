@@ -1,0 +1,22 @@
+apiVersion: v2
+appVersion: 6.3.4
+description: A Helm chart for KeyDB multimaster setup
+home: https://keydb.dev
+icon: https://docs.keydb.dev/img/keydb.svg
+keywords:
+  - keydb
+  - redis
+  - keyvalue
+  - database
+  - multimaster
+  - HA
+  - high-availability
+maintainers:
+  - email: zeroows@gmail.com
+    name: Abdulrhman Alkhodiry
+    url: https://github.com/zeroows/keydb-charts
+name: keydb
+sources:
+  - https://github.com/zeroows/keydb-charts
+  - https://github.com/Snapchat/KeyDB
+type: application

@@ -1,0 +1,5 @@
+appVersion: 6.3.4
+digest: abc123
+version: 0.1.0
+urls:
+  - https://example.com/test-chart-0.1.0.tgz
